@@ -3,6 +3,7 @@ local Vector = require("lib.vector")
 local Flux   = require("lib.flux")
 
 local World = require("world")
+local Shake = require("src.shake")
 
 local Paddle = Class("Paddle")
 
@@ -13,6 +14,9 @@ function Paddle:initialize(t)
    self.finish   = t.finish or Vector(0, 0)
    self.baseSize = t.size   or Vector(100, 20)
    self.baseRot  = t.rot    or 0
+
+   local direction = self.finish - self.start
+   self.shake = Shake(direction:normalizeInplace(), .6)
 
    self.pos  = self.start:clone()
    self.size = self.baseSize:clone()

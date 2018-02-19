@@ -57,6 +57,8 @@ function Ball:resolveCollision(col)
          x = col.other.baseSize.x
       }):ease("quadinout")
    end
+
+   col.other.shake:restart()
 end
 
 function Ball:draw()

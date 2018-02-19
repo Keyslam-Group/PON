@@ -74,18 +74,28 @@ Track:onBeat(function()
    --middleBeat:onBeat()
 end)
 
+local Shake = Vector(0, 0)
+
 function love.update(dt)
    Player:update()
 
+   Shake:set(0, 0)
+
    for i = 1, Paddles.size do
-      Paddles:get(i):update(dt)
+      local paddle = Paddles:get(i)
+      paddle:update(dt)
 
       if Player:pressed("activate") then
-         Paddles:get(i):activate()
+         paddle:activate()
       elseif Player:released("activate") then
-         Paddles:get(i):deactivate()
+         paddle:deactivate()
       end
+
+      Shake:add(paddle.shake:get())
    end
+
+   Shake:normalizeInplace()
+   Shake:mul(4)
 
    ball:update(dt)
 
@@ -96,6 +106,8 @@ end
 
 local draw = function ()
    love.graphics.draw(Gradient)
+   love.graphics.push()
+   love.graphics.translate(Shake.x, Shake.y)
 
    --middleBeat:draw()
 
@@ -104,6 +116,7 @@ local draw = function ()
    end
 
    ball:draw()
+   love.graphics.pop()
 end
 
 function love.draw()
