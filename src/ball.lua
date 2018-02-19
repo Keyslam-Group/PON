@@ -36,7 +36,7 @@ function Ball:update(dt)
 
    if self.colliding then
       local newx, newy, cols, len = World:move(
-        self, 
+        self,
         self.pos.x - self.size.x/2, self.pos.y - self.size.y/2,
         self.filter
       )
@@ -80,6 +80,10 @@ function Ball:draw()
    love.graphics.push()
    love.graphics.translate(self.pos.x, self.pos.y)
    love.graphics.rotate(self.rot)
+   if self.hasFill then
+    love.graphics.setColor(100, 20, 20)
+    love.graphics.rectangle("line", -self.size.x/2 +4, -self.size.y/2 +4, self.size.x, self.size.y, 16, 16)
+   end
    love.graphics.setColor(255, 255, 255, 255)
    love.graphics.rectangle("line", -self.size.x/2, -self.size.y/2, self.size.x, self.size.y, 16, 16)
    love.graphics.setColor(255, 255, 255, 30)

@@ -16,7 +16,7 @@ function Paddle:initialize(t)
    self.baseRot  = t.rot    or 0
 
    local direction = self.finish - self.start
-   self.shake = Shake(direction:normalizeInplace(), .15)
+   self.shake = Shake(direction:normalizeInplace(), .1)
 
    self.pos  = self.start:clone()
    self.size = self.baseSize:clone()
@@ -39,6 +39,10 @@ function Paddle:draw()
    love.graphics.push()
    love.graphics.translate(self.pos.x, self.pos.y)
    love.graphics.rotate(self.rot)
+   if self.hasFill then
+    love.graphics.setColor(100, 20, 20)
+    love.graphics.rectangle("line", -self.size.x/2 +4, -self.size.y/2 +4, self.size.x, self.size.y, 8, 8)
+   end
    love.graphics.setColor(255, 255, 255, 255)
    love.graphics.rectangle("line", -self.size.x/2, -self.size.y/2, self.size.x, self.size.y, 8, 8)
    if self.hasFill then

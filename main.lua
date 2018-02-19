@@ -106,7 +106,7 @@ function love.update(dt)
    Shake:mul(4)
 
    Effect.chromasep.angle  = math.atan2(Shake.y, Shake.x)
-   Effect.chromasep.radius = Shake:len() + 2
+   Effect.chromasep.radius = Shake:len() * 2 + 4
 
    local inside = ball:update(dt)
    if not inside and State.state == "playing" then
