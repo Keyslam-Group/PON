@@ -16,13 +16,14 @@ function Paddle:initialize(t)
    self.baseRot  = t.rot    or 0
 
    local direction = self.finish - self.start
-   self.shake = Shake(direction:normalizeInplace(), .6)
+   self.shake = Shake(direction:normalizeInplace(), .1)
 
    self.pos  = self.start:clone()
    self.size = self.baseSize:clone()
    self.rot  = self.baseRot
 
-   self.tween = nil
+   self.hasFill = true
+   self.tween   = nil
 
    World:add(self, self.pos.x - self.size.x/2, self.pos.y - self.size.y/2, self.size.x, self.size.y)
 end
@@ -31,7 +32,7 @@ function Paddle:update(dt)
    local newx, newy = World:move(self, self.pos.x - self.size.x/2, self.pos.y - self.size.y/2)
    self.pos:set(newx + self.size.x/2, newy + self.size.y/2)
 
-   --World:update(self, self.pos.x - self.size.x/2, self.pos.y - self.size.y/2, self.size.x, self.size.y)
+   World:update(self, self.pos.x - self.size.x/2, self.pos.y - self.size.y/2, self.size.x, self.size.y)
 end
 
 function Paddle:draw()
@@ -40,8 +41,10 @@ function Paddle:draw()
    love.graphics.rotate(self.rot)
    love.graphics.setColor(255, 255, 255, 255)
    love.graphics.rectangle("line", -self.size.x/2, -self.size.y/2, self.size.x, self.size.y, 8, 8)
-   love.graphics.setColor(255, 255, 255, 30)
-   love.graphics.rectangle("fill", -self.size.x/2, -self.size.y/2, self.size.x, self.size.y, 8, 8)
+   if self.hasFill then
+      love.graphics.setColor(255, 255, 255, 30)
+      love.graphics.rectangle("fill", -self.size.x/2, -self.size.y/2, self.size.x, self.size.y, 8, 8)
+   end
    love.graphics.pop()
 end
 
