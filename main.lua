@@ -107,7 +107,7 @@ function love.update(dt)
    Effect.chromasep.angle  = math.atan2(Shake.y, Shake.x)
    Effect.chromasep.radius = Shake:len() + 2
 
-   ball:update(dt)
+   print(ball:update(dt) and "Alive" or "DEAD!")
 
    Particles:update(dt)
 

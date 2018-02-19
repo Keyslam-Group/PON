@@ -8,6 +8,10 @@ local Particles = require("src.particles")
 
 local Ball = Class("Ball")
 
+local function isBall (item)
+  return item:isInstanceOf(Ball)
+end
+
 function Ball:initialize(t)
    t = t or {}
 
@@ -19,7 +23,7 @@ function Ball:initialize(t)
    self.size = self.baseSize:clone()
    self.rot  = self.baseRot
 
-   self.filter = function(item, other)
+   self.filter = function()
       return "bounce"
    end
    self.colliding = false
@@ -31,7 +35,11 @@ function Ball:update(dt)
    self.pos:add(self.vel * dt)
 
    if self.colliding then
-      local newx, newy, cols, len = World:move(self, self.pos.x - self.size.x/2, self.pos.y - self.size.y/2, self.filter)
+      local newx, newy, cols, len = World:move(
+        self, 
+        self.pos.x - self.size.x/2, self.pos.y - self.size.y/2,
+        self.filter
+      )
       self.pos:set(newx + self.size.x/2, newy + self.size.y/2)
 
       for i = 1, len do
@@ -39,6 +47,8 @@ function Ball:update(dt)
       end
    end
    --World:update(self, self.pos.x, self.pos.y, self.size.x, self.size.y)
+
+   return #World:queryRect(0, 0, 640, 640, isBall) ~= 0
 end
 
 function Ball:resolveCollision(col)
