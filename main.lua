@@ -45,6 +45,8 @@ local Effect = Shine(Shine.effects.filmgrain)
    .chain(Shine.effects.chromasep)
 Effect.filmgrain.opacity = 0.1
 
+local Gradient = love.graphics.newImage("assets/gradient.png")
+
 love.graphics.setBackgroundColor(183, 28, 28)
 love.graphics.setLineWidth(4)
 
@@ -67,6 +69,8 @@ function love.update(dt)
 end
 
 local draw = function ()
+   love.graphics.draw(Gradient)
+
    for i = 1, Paddles.size do
       Paddles:get(i):draw()
    end
