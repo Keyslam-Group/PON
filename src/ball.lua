@@ -62,11 +62,13 @@ function Ball:resolveCollision(col)
 end
 
 function Ball:draw()
-   love.graphics.setColor(255, 255, 255, 255)
    love.graphics.push()
    love.graphics.translate(self.pos.x, self.pos.y)
    love.graphics.rotate(self.rot)
+   love.graphics.setColor(255, 255, 255, 255)
    love.graphics.rectangle("line", -self.size.x/2, -self.size.y/2, self.size.x, self.size.y, 16, 16)
+   love.graphics.setColor(255, 255, 255, 30)
+   love.graphics.rectangle("fill", -self.size.x/2, -self.size.y/2, self.size.x, self.size.y, 16, 16)
    love.graphics.pop()
 end
 

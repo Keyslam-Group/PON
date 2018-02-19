@@ -35,11 +35,13 @@ function Paddle:update(dt)
 end
 
 function Paddle:draw()
-   love.graphics.setColor(255, 255, 255, 255)
    love.graphics.push()
    love.graphics.translate(self.pos.x, self.pos.y)
    love.graphics.rotate(self.rot)
+   love.graphics.setColor(255, 255, 255, 255)
    love.graphics.rectangle("line", -self.size.x/2, -self.size.y/2, self.size.x, self.size.y, 8, 8)
+   love.graphics.setColor(255, 255, 255, 30)
+   love.graphics.rectangle("fill", -self.size.x/2, -self.size.y/2, self.size.x, self.size.y, 8, 8)
    love.graphics.pop()
 end
 
