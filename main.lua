@@ -62,7 +62,6 @@ Effect.filmgrain.opacity = 0.1
 local Gradient = love.graphics.newImage("assets/gradient.png")
 
 love.graphics.setBackgroundColor(183, 28, 28)
-love.graphics.setLineWidth(4)
 
 local Track = Wave:newSource("track.wav", "static")
 Track:setIntensity(20)
@@ -71,7 +70,7 @@ Track:play()
 Track:setVolume(0)
 
 Track:onBeat(function()
-   --middleBeat:onBeat()
+   middleBeat:onBeat()
 end)
 
 local Shake = Vector(0, 0)
@@ -109,7 +108,9 @@ local draw = function ()
    love.graphics.push()
    love.graphics.translate(Shake.x, Shake.y)
 
-   --middleBeat:draw()
+   middleBeat:draw()
+
+   love.graphics.setLineWidth(4)
 
    for i = 1, Paddles.size do
       Paddles:get(i):draw()

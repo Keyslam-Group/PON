@@ -35,11 +35,13 @@ function MiddleBeat:onBeat()
 end
 
 function MiddleBeat:draw()
-   love.graphics.setColor(255, 255, 255)
-   love.graphics.rectangle("line", self.pos.x - self.size.x/2, self.pos.y - self.size.y/2, self.size.x, self.size.y, self.size.x/3, self.size.y/3)
+   love.graphics.setColor(255, 255, 255, 140)
+   love.graphics.circle("fill", self.pos.x, self.pos.y, self.size.x / 2)
 
-   love.graphics.setColor(255, 255, 255)
-   love.graphics.rectangle("line", self.pos.x - self.size.x/3, self.pos.y - self.size.y/3, self.size.x / 1.5, self.size.y / 1.5, self.size.x/4, self.size.y/4)
+   love.graphics.setColor(love.graphics.getBackgroundColor())
+   love.graphics.setLineWidth(10)
+   love.graphics.circle("line", self.pos.x, self.pos.y, self.size.x / 2)
+   love.graphics.circle("line", self.pos.x, self.pos.y, self.size.x / 3)
 end
 
 return MiddleBeat
