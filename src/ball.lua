@@ -4,6 +4,7 @@ local Flux   = require("lib.flux")
 
 local World = require("world")
 local hits = require("src.hits")
+local Particles = require("src.particles")
 
 local Ball = Class("Ball")
 
@@ -60,6 +61,7 @@ function Ball:resolveCollision(col)
       }):ease("quadinout")
    end
 
+   Particles:add(col.touch.x, col.touch.y, math.atan2(col.normal.y, col.normal.x))
    hits:count()
    col.other.shake:restart()
 end

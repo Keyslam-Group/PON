@@ -9,6 +9,7 @@ local Paddle     = require("src.paddle")
 local Ball       = require("src.ball")
 local MiddleBeat = require("src.middlebeat")
 local hits       = require("src.hits")
+local Particles  = require("src.particles")
 
 local cornerMargin = 40
 local borderMargin =  8
@@ -107,6 +108,8 @@ function love.update(dt)
 
    ball:update(dt)
 
+   Particles:update(dt)
+
    Flux.update(dt)
 
    Track:update(dt)
@@ -133,6 +136,8 @@ local draw = function ()
    end
 
    ball:draw()
+
+   Particles:draw()
    love.graphics.pop()
 end
 
