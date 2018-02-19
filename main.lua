@@ -69,8 +69,7 @@ love.graphics.setBackgroundColor(183, 28, 28)
 local Track = Wave:newSource("track.wav", "static")
 Track:setIntensity(20)
 Track:setBPM(70)
-Track:play()
-Track:setVolume(0)
+Track:setLooping(true)
 
 Track:onBeat(function()
    middleBeat:onBeat()
@@ -78,9 +77,11 @@ end)
 
 local Shake = Vector(0, 0)
 
+local State = require("state")
+
 local Sequence = require("src.sequence")
-Sequence.init(Paddles:get(1), Paddles:get(2), Paddles:get(3), Paddles:get(4), ball)
-Sequence.finish(1)
+Sequence.init(Paddles:get(1), Paddles:get(2), Paddles:get(3), Paddles:get(4), ball, Track, hits)
+Sequence.finish(0)
 
 
 function love.update(dt)
@@ -107,7 +108,10 @@ function love.update(dt)
    Effect.chromasep.angle  = math.atan2(Shake.y, Shake.x)
    Effect.chromasep.radius = Shake:len() + 2
 
-   print(ball:update(dt) and "Alive" or "DEAD!")
+   local inside = ball:update(dt)
+   if not inside and State.state == "playing" then
+      Sequence.finish(1)
+   end
 
    Particles:update(dt)
 
@@ -120,6 +124,10 @@ end
 function love.keypressed(key)
    if key == "p" then
       Sequence.start(1)
+   end
+
+   if key == "o" then
+      Sequence.finish()
    end
 end
 
