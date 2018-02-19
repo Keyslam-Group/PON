@@ -80,6 +80,10 @@ function Ball:draw()
    love.graphics.push()
    love.graphics.translate(self.pos.x, self.pos.y)
    love.graphics.rotate(self.rot)
+   if self.hasFill then
+    love.graphics.setColor(100, 20, 20)
+    love.graphics.rectangle("line", -self.size.x/2 +8, -self.size.y/2 +8, self.size.x, self.size.y, 16, 16)
+   end
    love.graphics.setColor(255, 255, 255, 255)
    love.graphics.rectangle("line", -self.size.x/2, -self.size.y/2, self.size.x, self.size.y, 16, 16)
    love.graphics.setColor(255, 255, 255, 30)

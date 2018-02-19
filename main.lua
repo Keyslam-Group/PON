@@ -13,7 +13,7 @@ local hits       = require("src.hits")
 local Particles  = require("src.particles")
 
 local cornerMargin = 40
-local borderMargin =  8
+local borderMargin = 12
 local length = 120
 local width  = 20
 

@@ -25,17 +25,17 @@ function Sequence.start()
    Flux.to(Sequence.paddles.left.pos,  t, {x = Sequence.paddles.left.start.x, y = Sequence.paddles.left.start.y}):ease("quadout")
    Flux.to(Sequence.paddles.left.size, t, {x = 20, y = 120}):ease("quadout")
    Flux.to(Sequence.paddles.left,  t, {rot = 0}):ease("quadout")
-   Sequence.paddles.up.hasFill = true
+   Sequence.paddles.left.hasFill = true
 
    Flux.to(Sequence.paddles.down.pos,  t, {x = Sequence.paddles.down.start.x, y = Sequence.paddles.down.start.y}):ease("quadout")
    Flux.to(Sequence.paddles.down.size, t, {x = 120, y = 20}):ease("quadout")
    Flux.to(Sequence.paddles.down,  t, {rot = 0}):ease("quadout")
-   Sequence.paddles.up.hasFill = true
+   Sequence.paddles.down.hasFill = true
 
    Flux.to(Sequence.paddles.right.pos,  t, {x = Sequence.paddles.right.start.x, y = Sequence.paddles.right.start.y}):ease("quadout")
    Flux.to(Sequence.paddles.right.size, t, {x = 20, y = 120}):ease("quadout")
    Flux.to(Sequence.paddles.right,  t, {rot = 0}):ease("quadout")
-   Sequence.paddles.up.hasFill = true
+   Sequence.paddles.right.hasFill = true
 
    Timer.script(function(wait)
       Flux.to(Sequence.ball.size, 0.5, {x = 300, y = 300}):ease("quadout")
