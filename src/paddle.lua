@@ -11,25 +11,32 @@ function Paddle:initialize(t)
 
    self.start    = t.start  or Vector(0, 0)
    self.finish   = t.finish or Vector(0, 0)
-   self.baseSize = t.size or Vector(100, 20)
+   self.baseSize = t.size   or Vector(100, 20)
+   self.baseRot  = t.rot    or 0
 
    self.pos  = self.start:clone()
    self.size = self.baseSize:clone()
+   self.rot  = self.baseRot
 
    self.tween = nil
 
-   World:add(self, self.pos.x, self.pos.y, self.size.x, self.size.y)
+   World:add(self, self.pos.x - self.size.x/2, self.pos.y - self.size.y/2, self.size.x, self.size.y)
 end
 
 function Paddle:update(dt)
-   local newx, newy = World:move(self, self.pos.x, self.pos.y)
-   self.pos:set(newx, newy)
+   local newx, newy = World:move(self, self.pos.x - self.size.x/2, self.pos.y - self.size.y/2)
+   self.pos:set(newx + self.size.x/2, newy + self.size.y/2)
 
-   World:update(self, self.pos.x, self.pos.y, self.size.x, self.size.y)
+   --World:update(self, self.pos.x - self.size.x/2, self.pos.y - self.size.y/2, self.size.x, self.size.y)
 end
 
 function Paddle:draw()
-   love.graphics.rectangle("line", self.pos.x, self.pos.y, self.size.x, self.size.y, 8, 8)
+   love.graphics.setColor(255, 255, 255, 255)
+   love.graphics.push()
+   love.graphics.translate(self.pos.x, self.pos.y)
+   love.graphics.rotate(self.rot)
+   love.graphics.rectangle("line", -self.size.x/2, -self.size.y/2, self.size.x, self.size.y, 8, 8)
+   love.graphics.pop()
 end
 
 function Paddle:getProgress()

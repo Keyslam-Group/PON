@@ -3,35 +3,49 @@ local Vector = require("lib.vector")
 local Baton  = require("lib.baton")
 local List   = require("lib.list")
 local Shine  = require("lib.moonshine")
+local Wave   = require("lib.wave")
 
-local Paddle = require("src.paddle")
-local Ball   = require("src.ball")
+local Paddle     = require("src.paddle")
+local Ball       = require("src.ball")
+local MiddleBeat = require("src.middlebeat")
+
+local cornerMargin = 40
+local borderMargin =  8
+local length = 120
+local width  = 20
+
+local totCornerMargin = cornerMargin + length/2
+local totBorderMargin = borderMargin +  width/2
 
 local Paddles = List()
 Paddles:add(Paddle({
-   start  = Vector(       20, 0),
-   finish = Vector(640 - 120, 0),
-   size   = Vector(100, 20),
+   start  = Vector(      totCornerMargin, totBorderMargin),
+   finish = Vector(640 - totCornerMargin, totBorderMargin),
+   size   = Vector(length, width),
 }))
 Paddles:add(Paddle({
-   start  = Vector(0,        20),
-   finish = Vector(0, 640 - 120),
-   size   = Vector(20, 100),
+   start  = Vector(totBorderMargin,       totCornerMargin),
+   finish = Vector(totBorderMargin, 640 - totCornerMargin),
+   size   = Vector(width, length),
 }))
 Paddles:add(Paddle({
-   start  = Vector(640 - 120, 640 - 20),
-   finish = Vector(       20, 640 - 20),
-   size   = Vector(100, 20),
+   start  = Vector(640 - totCornerMargin, 640 - totBorderMargin),
+   finish = Vector(      totCornerMargin, 640 - totBorderMargin),
+   size   = Vector(length, width),
 }))
 Paddles:add(Paddle({
-   start  = Vector(640 - 20, 640 - 120),
-   finish = Vector(640 - 20, 20),
-   size   = Vector(20, 100),
+   start  = Vector(640 - totBorderMargin, 640 - totCornerMargin),
+   finish = Vector(640 - totBorderMargin,       totCornerMargin),
+   size   = Vector(width, length),
 }))
 
 local ball = Ball({
    pos = Vector(200, 400),
    vel = Vector(150, -300),
+})
+
+local middleBeat = MiddleBeat({
+
 })
 
 local Player = Baton.new({
@@ -50,6 +64,16 @@ local Gradient = love.graphics.newImage("assets/gradient.png")
 love.graphics.setBackgroundColor(183, 28, 28)
 love.graphics.setLineWidth(4)
 
+local Track = Wave:newSource("track.wav", "static")
+Track:setIntensity(20)
+Track:setBPM(70)
+Track:play()
+Track:setVolume(0)
+
+Track:onBeat(function()
+   --middleBeat:onBeat()
+end)
+
 function love.update(dt)
    Player:update()
 
@@ -66,10 +90,14 @@ function love.update(dt)
    ball:update(dt)
 
    Flux.update(dt)
+
+   Track:update(dt)
 end
 
 local draw = function ()
    love.graphics.draw(Gradient)
+
+   --middleBeat:draw()
 
    for i = 1, Paddles.size do
       Paddles:get(i):draw()
@@ -79,5 +107,6 @@ local draw = function ()
 end
 
 function love.draw()
+   love.graphics.setColor(255, 255, 255)
    Effect(draw)
 end
