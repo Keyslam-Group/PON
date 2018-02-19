@@ -44,7 +44,7 @@ function Paddle:activate()
       self.tween:stop()
    end
 
-   self.tween = Flux.to(self.pos, 1 - self:getProgress(), {x = self.finish.x, y = self.finish.y}):ease("quadinout")
+   self.tween = Flux.to(self.pos, 1, {x = self.finish.x, y = self.finish.y}):ease("quadout")
 end
 
 function Paddle:deactivate()
@@ -52,7 +52,7 @@ function Paddle:deactivate()
       self.tween:stop()
    end
 
-   self.tween = Flux.to(self.pos, self:getProgress(), {x = self.start.x, y = self.start.y}):ease("quadinout")
+   self.tween = Flux.to(self.pos, 1, {x = self.start.x, y = self.start.y}):ease("quadout")
 end
 
 return Paddle
