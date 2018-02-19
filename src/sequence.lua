@@ -1,9 +1,10 @@
 local Flux  = require("lib.flux")
 local Timer = require("lib.timer")
+local State = require("state")
 
 local Sequence = {}
 
-function Sequence.init(paddleUp, paddleLeft, paddleDown, paddleRight, ball)
+function Sequence.init(paddleUp, paddleLeft, paddleDown, paddleRight, ball, track, hits)
    Sequence.paddles = {}
 
    Sequence.paddles.up    = paddleUp
@@ -12,6 +13,18 @@ function Sequence.init(paddleUp, paddleLeft, paddleDown, paddleRight, ball)
    Sequence.paddles.right = paddleRight
 
    Sequence.ball = ball
+
+   Sequence.track = track
+
+   Sequence.track:play()
+   Sequence.track:stop()
+
+   Sequence.three = love.audio.newSource("3.ogg")
+   Sequence.two   = love.audio.newSource("2.ogg")
+   Sequence.one   = love.audio.newSource("1.ogg")
+   Sequence.go    = love.audio.newSource("go.ogg")
+
+   Sequence.hits = hits
 end
 
 function Sequence.start()
@@ -38,33 +51,53 @@ function Sequence.start()
    Sequence.paddles.up.hasFill = true
 
    Timer.script(function(wait)
+      Sequence.hits:restart(4)
+      Sequence.hits:count(-1)
+
       Flux.to(Sequence.ball.size, 0.5, {x = 300, y = 300}):ease("quadout")
       Flux.to(Sequence.ball, 0.5, {rot = math.pi * 3}):ease("quadout")
+      Sequence.three:play()
 
-      wait(0.75)
+      wait(0.85)
 
+      Sequence.hits:count(-1)
       Flux.to(Sequence.ball.size, 0.5, {x = 400, y = 400}):ease("quadout")
       Flux.to(Sequence.ball, 0.5, {rot = math.pi * 4}):ease("quadout")
+      Sequence.two:play()
 
-      wait(0.75)
+      wait(0.85)
 
+      Sequence.hits:count(-1)
       Flux.to(Sequence.ball.size, 0.5, {x = 500, y = 500}):ease("quadout")
       Flux.to(Sequence.ball, 0.5, {rot = math.pi * 5}):ease("quadout")
+      Sequence.one:play()
 
-      wait(0.75)
+      wait(0.85)
 
+      Sequence.hits:count(-1)
       Flux.to(Sequence.ball.size, 0.5, {x = 20, y = 20}):ease("quadout")
       Flux.to(Sequence.ball, 0.5, {rot = 0}):ease("quadout")
+      Sequence.go:play()
 
       wait(0.25)
+
       Sequence.ball.vel:set(100, 400)
       Sequence.ball.hasFill = true
       Sequence.ball.colliding = true
+
+      Sequence.track:play()
+      Sequence.track:fadeIn()
+
+      State.state = "playing"
    end)
 
 end
 
 function Sequence.finish(t)
+   State.state = "paused"
+
+   Sequence.track:fadeOut()
+
    t = t or 1.5
 
    Flux.to(Sequence.paddles.up.pos,  t, {x = 320, y = 320 - 75}):ease("quadout")

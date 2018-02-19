@@ -9,20 +9,20 @@ function Hits:initialize ()
   self:restart()
 end
 
-function Hits:restart ()
+function Hits:restart (c)
   if self.tween then self.tween:stop() end
 
-  self.n = 0
+  self.n = c or 0
   self.scale = .5
   self.tween = nil
 end
 
-function Hits:count ()
+function Hits:count (c)
   if self.tween then self.tween:stop() end
 
-  self.n = self.n + 1
-  self.scale = 1
-  self.tween = Flux.to(self, .7, {scale = .5}):ease('quadout')
+  self.n = self.n + (c or 1)
+  self.scale = 1.5
+  self.tween = Flux.to(self, .4, {scale = .5}):ease('quadout')
 end
 
 function Hits:draw ()
@@ -38,4 +38,3 @@ function Hits:draw ()
 end
 
 return Hits() --Singleton
-

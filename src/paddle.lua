@@ -16,7 +16,7 @@ function Paddle:initialize(t)
    self.baseRot  = t.rot    or 0
 
    local direction = self.finish - self.start
-   self.shake = Shake(direction:normalizeInplace(), .1)
+   self.shake = Shake(direction:normalizeInplace(), .15)
 
    self.pos  = self.start:clone()
    self.size = self.baseSize:clone()
