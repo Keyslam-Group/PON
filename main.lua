@@ -7,7 +7,7 @@ local Paddle = require("src.paddle")
 local Paddles = {}
 Paddles[1] = Paddle({
    start  = Vector(0, 0),
-   finish = Vector(200, 0),
+   finish = Vector(640 - 100, 0),
 })
 
 local Player = Baton.new({

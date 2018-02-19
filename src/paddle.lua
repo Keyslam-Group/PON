@@ -21,12 +21,19 @@ function Paddle:draw()
    love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
 end
 
+function Paddle:getProgress()
+   local xp = (self.pos.x + self.start.x/2) / (self.finish.x + self.start.x/2)
+   local yp = (self.pos.y + self.start.y/2) / (self.finish.y + self.start.y/2)
+
+   return xp ~= xp and yp or xp -- NaN hack
+end
+
 function Paddle:activate()
    if self.tween then
       self.tween:stop()
    end
 
-   self.tween = Flux.to(self.pos, 2, {x = self.finish.x, y = self.finish.y})
+   self.tween = Flux.to(self.pos, 1 - self:getProgress(), {x = self.finish.x, y = self.finish.y}):ease("quadinout")
 end
 
 function Paddle:deactivate()
@@ -34,7 +41,7 @@ function Paddle:deactivate()
       self.tween:stop()
    end
 
-   self.tween = Flux.to(self.pos, 2, {x = self.start.x, y = self.start.y})
+   self.tween = Flux.to(self.pos, self:getProgress(), {x = self.start.x, y = self.start.y}):ease("quadinout")
 end
 
 return Paddle
