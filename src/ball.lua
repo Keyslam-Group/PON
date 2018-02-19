@@ -21,6 +21,7 @@ function Ball:initialize(t)
    self.filter = function(item, other)
       return "bounce"
    end
+   self.colliding = false
 
    World:add(self, self.pos.x - self.size.x/2, self.pos.y - self.size.y/2, self.size.x, self.size.y)
 end
@@ -28,13 +29,14 @@ end
 function Ball:update(dt)
    self.pos:add(self.vel * dt)
 
-   local newx, newy, cols, len = World:move(self, self.pos.x - self.size.x/2, self.pos.y - self.size.y/2, self.filter)
-   self.pos:set(newx + self.size.x/2, newy + self.size.y/2)
+   if self.colliding then
+      local newx, newy, cols, len = World:move(self, self.pos.x - self.size.x/2, self.pos.y - self.size.y/2, self.filter)
+      self.pos:set(newx + self.size.x/2, newy + self.size.y/2)
 
-   for i = 1, len do
-      self:resolveCollision(cols[i])
+      for i = 1, len do
+         self:resolveCollision(cols[i])
+      end
    end
-
    --World:update(self, self.pos.x, self.pos.y, self.size.x, self.size.y)
 end
 

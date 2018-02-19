@@ -77,8 +77,9 @@ end)
 local Shake = Vector(0, 0)
 
 local Sequence = require("src.sequence")
-Sequence.init(Paddles:get(1), Paddles:get(2), Paddles:get(3), Paddles:get(4), Ball)
---Sequence.finish()
+Sequence.init(Paddles:get(1), Paddles:get(2), Paddles:get(3), Paddles:get(4), ball)
+Sequence.finish(1)
+
 
 function love.update(dt)
    Player:update()
@@ -109,6 +110,12 @@ function love.update(dt)
    Flux.update(dt)
 
    Track:update(dt)
+end
+
+function love.keypressed(key)
+   if key == "p" then
+      Sequence.start(1)
+   end
 end
 
 local draw = function ()
