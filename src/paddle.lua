@@ -29,7 +29,7 @@ function Paddle:update(dt)
 end
 
 function Paddle:draw()
-   love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
+   love.graphics.rectangle("line", self.pos.x, self.pos.y, self.size.x, self.size.y, 8, 8)
 end
 
 function Paddle:getProgress()

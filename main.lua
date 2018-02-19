@@ -23,6 +23,8 @@ local Player = Baton.new({
    }
 })
 
+love.graphics.setLineWidth(4)
+
 function love.update(dt)
    Player:update()
 
