@@ -2,6 +2,8 @@ local Class  = require("lib.class")
 local Vector = require("lib.vector")
 local Flux   = require("lib.flux")
 
+local World = require("world")
+
 local Paddle = Class("Paddle")
 
 function Paddle:initialize(t)
@@ -15,6 +17,15 @@ function Paddle:initialize(t)
    self.size = self.baseSize:clone()
 
    self.tween = nil
+
+   World:add(self, self.pos.x, self.pos.y, self.size.x, self.size.y)
+end
+
+function Paddle:update(dt)
+   local newx, newy = World:move(self, self.pos.x, self.pos.y)
+   self.pos:set(newx, newy)
+
+   World:update(self, self.pos.x, self.pos.y, self.size.x, self.size.y)
 end
 
 function Paddle:draw()
