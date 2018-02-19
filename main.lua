@@ -2,6 +2,7 @@ local Flux   = require("lib.flux")
 local Vector = require("lib.vector")
 local Baton  = require("lib.baton")
 local List   = require("lib.list")
+local Shine  = require("lib.moonshine")
 
 local Paddle = require("src.paddle")
 local Ball   = require("src.ball")
@@ -39,6 +40,12 @@ local Player = Baton.new({
    }
 })
 
+local Effect = Shine(Shine.effects.filmgrain)
+   .chain(Shine.effects.glow)
+   .chain(Shine.effects.chromasep)
+Effect.filmgrain.opacity = 0.1
+
+love.graphics.setBackgroundColor(183, 28, 28)
 love.graphics.setLineWidth(4)
 
 function love.update(dt)
@@ -59,10 +66,14 @@ function love.update(dt)
    Flux.update(dt)
 end
 
-function love.draw()
+local draw = function ()
    for i = 1, Paddles.size do
       Paddles:get(i):draw()
    end
 
    ball:draw()
+end
+
+function love.draw()
+   Effect(draw)
 end
