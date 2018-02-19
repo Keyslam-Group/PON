@@ -41,8 +41,8 @@ Paddles:add(Paddle({
 }))
 
 local ball = Ball({
-   pos = Vector(900, 900),
-   vel = Vector(200, -350),
+   pos = Vector(360, 360),
+   vel = Vector(50, -350),
 })
 
 local middleBeat = MiddleBeat({
@@ -78,7 +78,7 @@ local Shake = Vector(0, 0)
 
 local Sequence = require("src.sequence")
 Sequence.init(Paddles:get(1), Paddles:get(2), Paddles:get(3), Paddles:get(4), Ball)
-Sequence.finish()
+--Sequence.finish()
 
 function love.update(dt)
    Player:update()
