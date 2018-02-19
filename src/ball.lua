@@ -42,9 +42,9 @@ function Ball:resolveCollision(col)
    if col.normal.x ~= 0 then
       self.vel.x = -self.vel.x
 
-      Flux.to(col.other.size, 0.125, {
-         y = col.other.baseSize.y + 30,
-      }):ease("quadout"):after(col.other.size, 0.125, {
+      col.other.size.y = col.other.baseSize.y + 50
+
+      Flux.to(col.other.size, 0.25, {
          y = col.other.baseSize.y
       }):ease("quadinout")
    end
@@ -52,9 +52,8 @@ function Ball:resolveCollision(col)
    if col.normal.y ~= 0 then
       self.vel.y = -self.vel.y
 
-      Flux.to(col.other.size, 0.125, {
-         x = col.other.baseSize.x + 30,
-      }):ease("quadout"):after(col.other.size, 0.125, {
+      col.other.size.x = col.other.baseSize.x + 50
+      Flux.to(col.other.size, 0.25, {
          x = col.other.baseSize.x
       }):ease("quadinout")
    end
