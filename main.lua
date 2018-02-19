@@ -4,6 +4,7 @@ local Baton  = require("lib.baton")
 local List   = require("lib.list")
 local Shine  = require("lib.moonshine")
 local Wave   = require("lib.wave")
+local Timer  = require("lib.timer")
 
 local Paddle     = require("src.paddle")
 local Ball       = require("src.ball")
@@ -111,6 +112,7 @@ function love.update(dt)
    Particles:update(dt)
 
    Flux.update(dt)
+   Timer.update(dt)
 
    Track:update(dt)
 end
