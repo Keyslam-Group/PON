@@ -96,6 +96,9 @@ function love.update(dt)
    Shake:normalizeInplace()
    Shake:mul(4)
 
+   Effect.chromasep.angle  = math.atan2(Shake.y, Shake.x)
+   Effect.chromasep.radius = Shake:len()
+
    ball:update(dt)
 
    Flux.update(dt)
