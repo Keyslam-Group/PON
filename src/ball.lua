@@ -3,6 +3,7 @@ local Vector = require("lib.vector")
 local Flux   = require("lib.flux")
 
 local World = require("world")
+local hits = require("src.hits")
 
 local Ball = Class("Ball")
 
@@ -58,6 +59,7 @@ function Ball:resolveCollision(col)
       }):ease("quadinout")
    end
 
+   hits:count()
    col.other.shake:restart()
 end
 

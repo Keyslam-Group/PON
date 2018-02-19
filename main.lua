@@ -8,6 +8,7 @@ local Wave   = require("lib.wave")
 local Paddle     = require("src.paddle")
 local Ball       = require("src.ball")
 local MiddleBeat = require("src.middlebeat")
+local hits       = require("src.hits")
 
 local cornerMargin = 40
 local borderMargin =  8
@@ -97,7 +98,7 @@ function love.update(dt)
    Shake:mul(4)
 
    Effect.chromasep.angle  = math.atan2(Shake.y, Shake.x)
-   Effect.chromasep.radius = Shake:len()
+   Effect.chromasep.radius = Shake:len() + 2
 
    ball:update(dt)
 
@@ -112,6 +113,7 @@ local draw = function ()
    love.graphics.translate(Shake.x, Shake.y)
 
    middleBeat:draw()
+   hits:draw()
 
    love.graphics.setLineWidth(4)
 
