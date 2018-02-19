@@ -1,4 +1,5 @@
-local Flux = require("lib.flux")
+local Flux  = require("lib.flux")
+local Timer = require("lib.timer")
 
 local Sequence = {}
 
@@ -36,10 +37,31 @@ function Sequence.start()
    Flux.to(Sequence.paddles.right,  t, {rot = 0}):ease("quadout")
    Sequence.paddles.up.hasFill = true
 
-   Sequence.ball.colliding = true
-   Flux.to(Sequence.ball.size, t, {x = 20, y = 20}):ease("quadout")
-   Flux.to(Sequence.ball, t, {rot = 0}):ease("quadout")
-   Sequence.ball.vel:set(240, 180)
+   Timer.script(function(wait)
+      Flux.to(Sequence.ball.size, 0.5, {x = 300, y = 300}):ease("quadout")
+      Flux.to(Sequence.ball, 0.5, {rot = math.pi * 3}):ease("quadout")
+
+      wait(0.75)
+
+      Flux.to(Sequence.ball.size, 0.5, {x = 400, y = 400}):ease("quadout")
+      Flux.to(Sequence.ball, 0.5, {rot = math.pi * 4}):ease("quadout")
+
+      wait(0.75)
+
+      Flux.to(Sequence.ball.size, 0.5, {x = 500, y = 500}):ease("quadout")
+      Flux.to(Sequence.ball, 0.5, {rot = math.pi * 5}):ease("quadout")
+
+      wait(0.75)
+
+      Flux.to(Sequence.ball.size, 0.5, {x = 20, y = 20}):ease("quadout")
+      Flux.to(Sequence.ball, 0.5, {rot = 0}):ease("quadout")
+
+      wait(0.25)
+      Sequence.ball.vel:set(100, 400)
+      Sequence.ball.hasFill = true
+      Sequence.ball.colliding = true
+   end)
+
 end
 
 function Sequence.finish(t)
