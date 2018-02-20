@@ -21,22 +21,22 @@ local totCornerMargin = cornerMargin + length/2
 local totBorderMargin = borderMargin +  width/2
 
 local Paddles = List()
-Paddles:add(Paddle({
+Paddles:add(Paddle("Top", {
    start  = Vector(      totCornerMargin, totBorderMargin),
    finish = Vector(640 - totCornerMargin, totBorderMargin),
    size   = Vector(length, width),
 }))
-Paddles:add(Paddle({
+Paddles:add(Paddle("Left", {
    start  = Vector(totBorderMargin,       totCornerMargin),
    finish = Vector(totBorderMargin, 640 - totCornerMargin),
    size   = Vector(width, length),
 }))
-Paddles:add(Paddle({
+Paddles:add(Paddle("Bottom", {
    start  = Vector(640 - totCornerMargin, 640 - totBorderMargin),
    finish = Vector(      totCornerMargin, 640 - totBorderMargin),
    size   = Vector(length, width),
 }))
-Paddles:add(Paddle({
+Paddles:add(Paddle("Right", {
    start  = Vector(640 - totBorderMargin, 640 - totCornerMargin),
    finish = Vector(640 - totBorderMargin,       totCornerMargin),
    size   = Vector(width, length),

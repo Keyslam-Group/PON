@@ -7,9 +7,10 @@ local Shake = require("src.shake")
 
 local Paddle = Class("Paddle")
 
-function Paddle:initialize(t)
+function Paddle:initialize(name, t)
    t = t or {}
 
+   self.name     = name
    self.start    = t.start  or Vector(0, 0)
    self.finish   = t.finish or Vector(0, 0)
    self.baseSize = t.size   or Vector(100, 20)

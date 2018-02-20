@@ -35,23 +35,38 @@ function Ball:initialize(t)
 end
 
 function Ball:update(dt)
-   self.pos:add(self.vel * dt)
+      local x, y = self.pos.x, self.pos.y
+      self.pos:add(self.vel * dt)
 
-   if self.colliding then
-      local newx, newy, cols, len = World:move(
-        self,
-        self.pos.x - self.size.x/2, self.pos.y - self.size.y/2,
-        self.filter
-      )
-      self.pos:set(newx + self.size.x/2, newy + self.size.y/2)
+      if self.colliding then
+          local newx, newy, cols, len = World:move(
+            self,
+            self.pos.x - self.size.x/2, self.pos.y - self.size.y/2,
+            self.filter
+          )
+          self.pos:set(newx + self.size.x/2, newy + self.size.y/2)
 
-      for i = 1, len do
-         self:resolveCollision(cols[i])
+          for i = 1, len do
+            self:resolveCollision(cols[i])
+          end
+
+          local inside = #World:queryRect(0, 0, 640, 640, isBall) ~= 0
+
+          if not inside then
+            if x == 320 and y == 320 then
+              print(newx, newy)
+            end
+
+            if len > 0 then
+              print(cols[1].other.name, cols[1].touch.x, cols[1].touch.y)
+            end
+
+            print(self.pos)
+          end
+          return inside
       end
-   end
-   --World:update(self, self.pos.x, self.pos.y, self.size.x, self.size.y)
-
-   return #World:queryRect(0, 0, 640, 640, isBall) ~= 0
+      --World:update(self, self.pos.x, self.pos.y, self.size.x, self.size.y)
+   return true
 end
 
 function Ball:resolveCollision(col)
@@ -86,6 +101,14 @@ function Ball:resolveCollision(col)
    self.hit:play(true)
 
    col.other.shake:restart()
+end
+
+function Ball:reset()
+   World:update(
+      self,
+      self.pos.x - self.size.x/2, self.pos.y - self.size.y/2--,
+      --self.size.x, self.size.y
+   )
 end
 
 function Ball:draw()

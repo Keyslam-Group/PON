@@ -89,6 +89,8 @@ function Sequence.start()
 
       wait(0.25)
 
+      Sequence.ball:reset()
+
       Sequence.ball.vel = Vector.randomDirection(200)
       Sequence.ball.hasFill = true
       Sequence.ball.colliding = true
