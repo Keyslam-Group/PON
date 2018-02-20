@@ -13,7 +13,7 @@ local hits       = require("src.hits")
 local Particles  = require("src.particles")
 
 local cornerMargin = 40
-local borderMargin = 12
+local borderMargin =  8
 local length = 120
 local width  = 20
 
@@ -75,6 +75,8 @@ Track:onBeat(function()
    middleBeat:onBeat()
 end)
 
+local Die = love.audio.newSource("die.wav")
+
 local Shake = Vector(0, 0)
 
 local State = require("state")
@@ -83,33 +85,41 @@ local Sequence = require("src.sequence")
 Sequence.init(Paddles:get(1), Paddles:get(2), Paddles:get(3), Paddles:get(4), ball, Track, hits)
 Sequence.finish(0)
 
+local Logo = require("logo")
 
 function love.update(dt)
    Player:update()
 
    Shake:set(0, 0)
 
-   for i = 1, Paddles.size do
-      local paddle = Paddles:get(i)
-      paddle:update(dt)
+   if State.state == "playing" then
+      for i = 1, Paddles.size do
+         local paddle = Paddles:get(i)
+         paddle:update(dt)
 
-      if Player:pressed("activate") then
-         paddle:activate()
-      elseif Player:released("activate") then
-         paddle:deactivate()
+         if Player:pressed("activate") then
+            paddle:activate()
+         elseif Player:released("activate") then
+            paddle:deactivate()
+         end
+
+         Shake:add(paddle.shake:get())
       end
-
-      Shake:add(paddle.shake:get())
+   elseif State.state == "paused" then
+      if Player:pressed("activate") then
+         Sequence.start()
+      end
    end
 
    Shake:normalizeInplace()
    Shake:mul(4)
 
    Effect.chromasep.angle  = math.atan2(Shake.y, Shake.x)
-   Effect.chromasep.radius = Shake:len() + 2
+   Effect.chromasep.radius = Shake:len() * 2 + 4
 
    local inside = ball:update(dt)
    if not inside and State.state == "playing" then
+      Die:play()
       Sequence.finish(1)
    end
 
@@ -119,16 +129,6 @@ function love.update(dt)
    Timer.update(dt)
 
    Track:update(dt)
-end
-
-function love.keypressed(key)
-   if key == "p" then
-      Sequence.start(1)
-   end
-
-   if key == "o" then
-      Sequence.finish()
-   end
 end
 
 local draw = function ()
@@ -146,6 +146,8 @@ local draw = function ()
    end
 
    ball:draw()
+
+   Logo.draw()
 
    Particles:draw()
    love.graphics.pop()

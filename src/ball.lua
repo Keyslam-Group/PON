@@ -1,6 +1,7 @@
 local Class  = require("lib.class")
 local Vector = require("lib.vector")
 local Flux   = require("lib.flux")
+local Wave   = require("lib.wave")
 
 local World = require("world")
 local hits = require("src.hits")
@@ -27,6 +28,8 @@ function Ball:initialize(t)
       return "bounce"
    end
    self.colliding = false
+
+   self.hit = Wave:newSource("hit.wav", "static")
 
    World:add(self, self.pos.x - self.size.x/2, self.pos.y - self.size.y/2, self.size.x, self.size.y)
 end
@@ -60,6 +63,8 @@ function Ball:resolveCollision(col)
       Flux.to(col.other.size, 0.25, {
          y = col.other.baseSize.y
       }):ease("quadinout")
+
+      self.vel.y = self.vel.y * (1 + love.math.random(-6, 6)/10)
    end
 
    if col.normal.y ~= 0 then
@@ -69,10 +74,17 @@ function Ball:resolveCollision(col)
       Flux.to(col.other.size, 0.25, {
          x = col.other.baseSize.x
       }):ease("quadinout")
+
+      self.vel.x = self.vel.x * (1 + love.math.random(-6, 6)/10)
    end
+
+   self.vel:mul(1.05)
+
 
    Particles:add(col.touch.x, col.touch.y, math.atan2(col.normal.y, col.normal.x))
    hits:count()
+   self.hit:play(true)
+
    col.other.shake:restart()
 end
 

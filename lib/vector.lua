@@ -73,6 +73,23 @@ function vector.__sub(a,b)
 	return new(a.x-b.x, a.y-b.y)
 end
 
+local function fromPolar(angle, radius)
+	radius = radius or 1
+	return new(cos(angle) * radius, sin(angle) * radius)
+end
+
+
+local function randomDirection(len_min, len_max)
+	len_min = len_min or 1
+	len_max = len_max or len_min
+
+	assert(len_max > 0, "len_max must be greater than zero")
+	assert(len_max >= len_min, "len_max must be greater than or equal to len_min")
+
+	return fromPolar(love.math.random() * 2*math.pi,
+	                 love.math.random() * (len_max-len_min) + len_min)
+end
+
 function vector.__mul(a,b)
 	if type(a) == "number" then
 		return new(a*b.x, a*b.y)
@@ -244,10 +261,13 @@ function vector:trimmed(maxLen)
 end
 
 
+
 -- the module
 return setmetatable({
 	new      = new,
 	isvector = isvector,
+	randomDirection = randomDirection,
+	fromPolar = fromPolar,
 
 	zero  = zero,
 	up    = up,

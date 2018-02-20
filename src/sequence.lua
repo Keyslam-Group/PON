@@ -1,6 +1,10 @@
 local Flux  = require("lib.flux")
 local Timer = require("lib.timer")
 local State = require("state")
+local Vector = require("lib.vector")
+
+local Logo = require("logo")
+
 
 local Sequence = {}
 
@@ -28,7 +32,11 @@ function Sequence.init(paddleUp, paddleLeft, paddleDown, paddleRight, ball, trac
 end
 
 function Sequence.start()
+   State.state = "transition"
+
    local t = 1
+
+   Flux.to(Logo, t / 2, {fade = 0}):ease("quadout")
 
    Flux.to(Sequence.paddles.up.pos,  t, {x = Sequence.paddles.up.start.x, y = Sequence.paddles.up.start.y}):ease("quadout")
    Flux.to(Sequence.paddles.up.size, t, {x = 120, y = 20}):ease("quadout")
@@ -81,7 +89,7 @@ function Sequence.start()
 
       wait(0.25)
 
-      Sequence.ball.vel:set(100, 400)
+      Sequence.ball.vel = Vector.randomDirection(200)
       Sequence.ball.hasFill = true
       Sequence.ball.colliding = true
 
@@ -94,11 +102,13 @@ function Sequence.start()
 end
 
 function Sequence.finish(t)
-   State.state = "paused"
+   State.state = "transition"
 
    Sequence.track:fadeOut()
 
    t = t or 1.5
+
+   Flux.to(Logo, t, {fade = 1}):ease("quadin")
 
    Flux.to(Sequence.paddles.up.pos,  t, {x = 320, y = 320 - 75}):ease("quadout")
    Flux.to(Sequence.paddles.up.size, t, {x = 80, y = 20}):ease("quadout")
@@ -125,6 +135,10 @@ function Sequence.finish(t)
    Flux.to(Sequence.ball.size, t, {x = 200, y = 200}):ease("quadout")
    Flux.to(Sequence.ball, t, {rot = math.pi * 2}):ease("quadout")
    Sequence.ball.vel:set(0, 0)
+
+   Timer.after(t, function()
+      State.state = "paused"
+   end)
 end
 
 return Sequence
