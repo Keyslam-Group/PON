@@ -3,8 +3,8 @@ local Vector = require("lib.vector")
 local Flux   = require("lib.flux")
 local Wave   = require("lib.wave")
 
-local World = require("world")
-local hits = require("src.hits")
+local World     = require("src.world")
+local hits      = require("src.hits")
 local Particles = require("src.particles")
 
 local Ball = Class("Ball")
@@ -29,7 +29,7 @@ function Ball:initialize(t)
    end
    self.colliding = false
 
-   self.hit = Wave:newSource("hit.wav", "static")
+   self.hit = Wave:newSource("sounds/hit.wav", "static")
 
    World:add(self, self.pos.x - self.size.x/2, self.pos.y - self.size.y/2, self.size.x, self.size.y)
 end

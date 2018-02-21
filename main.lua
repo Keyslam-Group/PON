@@ -11,6 +11,9 @@ local Ball       = require("src.ball")
 local MiddleBeat = require("src.middlebeat")
 local hits       = require("src.hits")
 local Particles  = require("src.particles")
+local State      = require("src.state")
+local Sequence   = require("src.sequence")
+local Logo       = require("src.logo")
 
 local cornerMargin = 40
 local borderMargin =  8
@@ -66,7 +69,7 @@ local Gradient = love.graphics.newImage("assets/gradient.png")
 
 love.graphics.setBackgroundColor(183, 28, 28)
 
-local Track = Wave:newSource("track.wav", "static")
+local Track = Wave:newSource("sounds/track.wav", "static")
 Track:setIntensity(20)
 Track:setBPM(70)
 Track:setLooping(true)
@@ -75,17 +78,12 @@ Track:onBeat(function()
    middleBeat:onBeat()
 end)
 
-local Die = love.audio.newSource("die.wav")
+local Die = love.audio.newSource("sounds/die.wav")
 
 local Shake = Vector(0, 0)
 
-local State = require("state")
-
-local Sequence = require("src.sequence")
 Sequence.init(Paddles:get(1), Paddles:get(2), Paddles:get(3), Paddles:get(4), ball, Track, hits)
 Sequence.finish(0)
-
-local Logo = require("logo")
 
 function love.update(dt)
    Player:update()

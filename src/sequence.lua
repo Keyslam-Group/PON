@@ -1,9 +1,9 @@
 local Flux  = require("lib.flux")
 local Timer = require("lib.timer")
-local State = require("state")
 local Vector = require("lib.vector")
 
-local Logo = require("logo")
+local State = require("src.state")
+local Logo = require("src.logo")
 
 
 local Sequence = {}
@@ -23,10 +23,10 @@ function Sequence.init(paddleUp, paddleLeft, paddleDown, paddleRight, ball, trac
    Sequence.track:play()
    Sequence.track:stop()
 
-   Sequence.three = love.audio.newSource("3.ogg")
-   Sequence.two   = love.audio.newSource("2.ogg")
-   Sequence.one   = love.audio.newSource("1.ogg")
-   Sequence.go    = love.audio.newSource("go.ogg")
+   Sequence.three = love.audio.newSource("sounds/3.ogg")
+   Sequence.two   = love.audio.newSource("sounds/2.ogg")
+   Sequence.one   = love.audio.newSource("sounds/1.ogg")
+   Sequence.go    = love.audio.newSource("sounds/go.ogg")
 
    Sequence.hits = hits
 end

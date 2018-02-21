@@ -2,7 +2,7 @@ local Class  = require("lib.class")
 local Vector = require("lib.vector")
 local Flux   = require("lib.flux")
 
-local World = require("world")
+local World = require("src.world")
 local Shake = require("src.shake")
 
 local Paddle = Class("Paddle")
