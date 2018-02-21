@@ -35,38 +35,24 @@ function Ball:initialize(t)
 end
 
 function Ball:update(dt)
-      local x, y = self.pos.x, self.pos.y
-      self.pos:add(self.vel * dt)
+   self.pos:add(self.vel * dt)
 
-      if self.colliding then
-          local newx, newy, cols, len = World:move(
-            self,
-            self.pos.x - self.size.x/2, self.pos.y - self.size.y/2,
-            self.filter
-          )
-          self.pos:set(newx + self.size.x/2, newy + self.size.y/2)
+   if self.colliding then
+         local newx, newy, cols, len = World:move(
+         self,
+         self.pos.x - self.size.x/2, self.pos.y - self.size.y/2,
+         self.filter
+         )
+         self.pos:set(newx + self.size.x/2, newy + self.size.y/2)
 
-          for i = 1, len do
-            self:resolveCollision(cols[i])
-          end
+         for i = 1, len do
+         self:resolveCollision(cols[i])
+         end
 
-          local inside = #World:queryRect(0, 0, 640, 640, isBall) ~= 0
-
-          if not inside then
-            if x == 320 and y == 320 then
-              print(newx, newy)
-            end
-
-            if len > 0 then
-              print(cols[1].other.name, cols[1].touch.x, cols[1].touch.y)
-            end
-
-            print(self.pos)
-          end
-          return inside
-      end
-      --World:update(self, self.pos.x, self.pos.y, self.size.x, self.size.y)
-   return true
+         return #World:queryRect(0, 0, 640, 640, isBall) ~= 0
+   end
+   --World:update(self, self.pos.x, self.pos.y, self.size.x, self.size.y)
+   return true --Treat a non colliding ball as being always inside the world
 end
 
 function Ball:resolveCollision(col)
@@ -106,8 +92,7 @@ end
 function Ball:reset()
    World:update(
       self,
-      self.pos.x - self.size.x/2, self.pos.y - self.size.y/2--,
-      --self.size.x, self.size.y
+      self.pos.x - self.size.x/2, self.pos.y - self.size.y/2
    )
 end
 
