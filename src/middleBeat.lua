@@ -1,10 +1,9 @@
-local Class  = require("lib.class")
 local Vector = require("lib.vector")
 local Flux   = require("lib.flux")
 
-local MiddleBeat = Class("MiddleBeat")
+local MiddleBeat = {}
 
-function MiddleBeat:initialize(t)
+function MiddleBeat:init(t)
    t = t or {}
 
    self.baseSize = t.size or Vector(360, 360)
@@ -43,5 +42,7 @@ function MiddleBeat:draw()
    love.graphics.circle("line", self.pos.x, self.pos.y, self.size.x / 2)
    love.graphics.circle("line", self.pos.x, self.pos.y, self.size.x / 3)
 end
+
+MiddleBeat:init()
 
 return MiddleBeat

@@ -4,13 +4,13 @@ local Flux   = require("lib.flux")
 local Wave   = require("lib.wave")
 
 local World     = require("src.world")
-local hits      = require("src.hits")
+local Hits      = require("src.hits")
 local Particles = require("src.particles")
 
 local Ball = Class("Ball")
 
 local function isBall (item)
-  return item:isInstanceOf(Ball)
+  return item.class.name == "Ball"
 end
 
 function Ball:initialize(t)
@@ -38,18 +38,18 @@ function Ball:update(dt)
    self.pos:add(self.vel * dt)
 
    if self.colliding then
-         local newx, newy, cols, len = World:move(
+      local newx, newy, cols, len = World:move(
          self,
          self.pos.x - self.size.x/2, self.pos.y - self.size.y/2,
          self.filter
-         )
-         self.pos:set(newx + self.size.x/2, newy + self.size.y/2)
+      )
+      self.pos:set(newx + self.size.x/2, newy + self.size.y/2)
 
-         for i = 1, len do
+      for i = 1, len do
          self:resolveCollision(cols[i])
-         end
+      end
 
-         return #World:queryRect(0, 0, 640, 640, isBall) ~= 0
+      return #World:queryRect(0, 0, 640, 640, isBall) ~= 0
    end
    --World:update(self, self.pos.x, self.pos.y, self.size.x, self.size.y)
    return true --Treat a non colliding ball as being always inside the world
@@ -83,7 +83,7 @@ function Ball:resolveCollision(col)
 
 
    Particles:add(col.touch.x, col.touch.y, math.atan2(col.normal.y, col.normal.x))
-   hits:count()
+   Hits:count()
    self.hit:play(true)
 
    col.other.shake:restart()
@@ -101,8 +101,8 @@ function Ball:draw()
    love.graphics.translate(self.pos.x, self.pos.y)
    love.graphics.rotate(self.rot)
    if self.hasFill then
-    love.graphics.setColor(100, 20, 20)
-    love.graphics.rectangle("line", -self.size.x/2 +3, -self.size.y/2 +3, self.size.x, self.size.y, 16, 16)
+      love.graphics.setColor(100, 20, 20)
+      love.graphics.rectangle("line", -self.size.x/2 +3, -self.size.y/2 +3, self.size.x, self.size.y, 16, 16)
    end
    love.graphics.setColor(255, 255, 255, 255)
    love.graphics.rectangle("line", -self.size.x/2, -self.size.y/2, self.size.x, self.size.y, 16, 16)

@@ -1,7 +1,6 @@
 local Flux   = require("lib.flux")
 local Vector = require("lib.vector")
 local Baton  = require("lib.baton")
-local List   = require("lib.list")
 local Shine  = require("lib.moonshine")
 local Wave   = require("lib.wave")
 local Timer  = require("lib.timer")
@@ -9,7 +8,7 @@ local Timer  = require("lib.timer")
 local Paddle     = require("src.paddle")
 local Ball       = require("src.ball")
 local MiddleBeat = require("src.middlebeat")
-local hits       = require("src.hits")
+local Hits       = require("src.hits")
 local Particles  = require("src.particles")
 local State      = require("src.state")
 local Sequence   = require("src.sequence")
@@ -23,35 +22,32 @@ local width  = 20
 local totCornerMargin = cornerMargin + length/2
 local totBorderMargin = borderMargin +  width/2
 
-local Paddles = List()
-Paddles:add(Paddle("Top", {
-   start  = Vector(      totCornerMargin, totBorderMargin),
-   finish = Vector(640 - totCornerMargin, totBorderMargin),
-   size   = Vector(length, width),
-}))
-Paddles:add(Paddle("Left", {
-   start  = Vector(totBorderMargin,       totCornerMargin),
-   finish = Vector(totBorderMargin, 640 - totCornerMargin),
-   size   = Vector(width, length),
-}))
-Paddles:add(Paddle("Bottom", {
-   start  = Vector(640 - totCornerMargin, 640 - totBorderMargin),
-   finish = Vector(      totCornerMargin, 640 - totBorderMargin),
-   size   = Vector(length, width),
-}))
-Paddles:add(Paddle("Right", {
-   start  = Vector(640 - totBorderMargin, 640 - totCornerMargin),
-   finish = Vector(640 - totBorderMargin,       totCornerMargin),
-   size   = Vector(width, length),
-}))
+local Paddles = {
+   Paddle("Top", {
+      start  = Vector(      totCornerMargin, totBorderMargin),
+      finish = Vector(640 - totCornerMargin, totBorderMargin),
+      size   = Vector(length, width),
+   }),
+   Paddle("Left", {
+      start  = Vector(totBorderMargin,       totCornerMargin),
+      finish = Vector(totBorderMargin, 640 - totCornerMargin),
+      size   = Vector(width, length),
+   }),
+   Paddle("Bottom", {
+      start  = Vector(640 - totCornerMargin, 640 - totBorderMargin),
+      finish = Vector(      totCornerMargin, 640 - totBorderMargin),
+      size   = Vector(length, width),
+   }),
+   Paddle("Right", {
+      start  = Vector(640 - totBorderMargin, 640 - totCornerMargin),
+      finish = Vector(640 - totBorderMargin,       totCornerMargin),
+      size   = Vector(width, length),
+   })
+}
 
 local ball = Ball({
    pos = Vector(360, 360),
    vel = Vector(50, -350),
-})
-
-local middleBeat = MiddleBeat({
-
 })
 
 local Player = Baton.new({
@@ -60,30 +56,28 @@ local Player = Baton.new({
    }
 })
 
+local Track = Wave:newSource("sounds/track.wav", "static")
+Track:setIntensity(20)
+Track:setBPM(70)
+Track:setLooping(true)
+Track:onBeat(function()
+   MiddleBeat:onBeat()
+end)
+
 local Effect = Shine(Shine.effects.filmgrain)
    .chain(Shine.effects.glow)
    .chain(Shine.effects.chromasep)
 Effect.filmgrain.opacity = 0.1
 
-local Gradient = love.graphics.newImage("assets/gradient.png")
-
-love.graphics.setBackgroundColor(183, 28, 28)
-
-local Track = Wave:newSource("sounds/track.wav", "static")
-Track:setIntensity(20)
-Track:setBPM(70)
-Track:setLooping(true)
-
-Track:onBeat(function()
-   middleBeat:onBeat()
-end)
-
-local Die = love.audio.newSource("sounds/die.wav")
-
 local Shake = Vector(0, 0)
 
-Sequence.init(Paddles:get(1), Paddles:get(2), Paddles:get(3), Paddles:get(4), ball, Track, hits)
+Sequence.init(Paddles[1], Paddles[2], Paddles[3], Paddles[4], ball, Track, Hits)
 Sequence.finish(0)
+
+local Gradient = love.graphics.newImage("assets/gradient.png")
+local Die = love.audio.newSource("sounds/die.wav")
+
+love.graphics.setBackgroundColor(183, 28, 28)
 
 function love.update(dt)
    Player:update()
@@ -91,8 +85,7 @@ function love.update(dt)
    Shake:set(0, 0)
 
    if State.state == "playing" then
-      for i = 1, Paddles.size do
-         local paddle = Paddles:get(i)
+      for _, paddle in ipairs(Paddles) do
          paddle:update(dt)
 
          if Player:pressed("activate") then
@@ -134,13 +127,13 @@ local draw = function ()
    love.graphics.push()
    love.graphics.translate(Shake.x, Shake.y)
 
-   middleBeat:draw()
-   hits:draw()
+   MiddleBeat:draw()
+   Hits:draw()
 
    love.graphics.setLineWidth(4)
 
-   for i = 1, Paddles.size do
-      Paddles:get(i):draw()
+   for _, paddle in ipairs(Paddles) do
+      paddle:draw()
    end
 
    ball:draw()

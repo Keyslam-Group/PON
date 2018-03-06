@@ -5,7 +5,6 @@ local Vector = require("lib.vector")
 local State = require("src.state")
 local Logo = require("src.logo")
 
-
 local Sequence = {}
 
 function Sequence.init(paddleUp, paddleLeft, paddleDown, paddleRight, ball, track, hits)
@@ -100,7 +99,6 @@ function Sequence.start()
 
       State.state = "playing"
    end)
-
 end
 
 function Sequence.finish(t)
