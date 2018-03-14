@@ -6,4 +6,6 @@ function love.conf(t)
    t.window.height = 640
    t.window.vsync  = false
    t.window.icon   = "assets/logo.png"
+
+   t.window.resizable = true
 end

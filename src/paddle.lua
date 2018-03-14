@@ -2,15 +2,16 @@ local Class  = require("lib.class")
 local Vector = require("lib.vector")
 local Flux   = require("lib.flux")
 
-local World = require("src.world")
-local Shake = require("src.shake")
+local World  = require("src.world")
+local Shake  = require("src.shake")
+local Screen = require("src.screen")
 
 local Paddle = Class("Paddle")
 
-function Paddle:initialize(name, t)
+function Paddle:initialize(t)
    t = t or {}
 
-   self.name     = name
+   self.name     = t.name
    self.start    = t.start  or Vector(0, 0)
    self.finish   = t.finish or Vector(0, 0)
    self.baseSize = t.size   or Vector(100, 20)
@@ -36,20 +37,31 @@ function Paddle:update(dt)
    World:update(self, self.pos.x - self.size.x/2, self.pos.y - self.size.y/2, self.size.x, self.size.y)
 end
 
-function Paddle:draw()
+function Paddle:draw(glow)
+   local sc = Screen.scale
+
    love.graphics.push()
-   love.graphics.translate(self.pos.x, self.pos.y)
+   love.graphics.translate(self.pos.x * sc, self.pos.y * sc)
    love.graphics.rotate(self.rot)
-   if self.hasFill then
+
+   local x, y = -self.size.x/2 * sc, -self.size.y/2 * sc
+   local w, h = self.size.x * sc, self.size.y * sc
+   local r = 8 * sc
+
+   love.graphics.setLineWidth(4 * sc)
+
+   if self.hasFill and not glow then
+      local off = 3 * sc
       love.graphics.setColor(100, 20, 20)
-      love.graphics.rectangle("line", -self.size.x/2 +3, -self.size.y/2 +3, self.size.x, self.size.y, 8, 8)
-   end
-   love.graphics.setColor(255, 255, 255, 255)
-   love.graphics.rectangle("line", -self.size.x/2, -self.size.y/2, self.size.x, self.size.y, 8, 8)
-   if self.hasFill then
+      love.graphics.rectangle("line", x + off, y + off, w, h, r, r)
+
       love.graphics.setColor(255, 255, 255, 30)
-      love.graphics.rectangle("fill", -self.size.x/2, -self.size.y/2, self.size.x, self.size.y, 8, 8)
+      love.graphics.rectangle("fill", x, y, w, h, r, r)
    end
+
+   love.graphics.setColor(255, 255, 255, 255)
+   love.graphics.rectangle("line", x, y, w, h, r, r)
+
    love.graphics.pop()
 end
 

@@ -1,5 +1,6 @@
 local Vector = require("lib.vector")
 local Flux   = require("lib.flux")
+local Screen = require("src.screen")
 
 local MiddleBeat = {}
 
@@ -34,13 +35,17 @@ function MiddleBeat:onBeat()
 end
 
 function MiddleBeat:draw()
+   local sc = Screen.scale
+   local x, y = self.pos.x * sc, self.pos.y * sc
+
    love.graphics.setColor(255, 255, 255, 140)
-   love.graphics.circle("fill", self.pos.x, self.pos.y, self.size.x / 2)
+   love.graphics.setLineWidth(10 * sc)
+
+   love.graphics.circle("fill", x, y, self.size.x / 2 * sc)
 
    love.graphics.setColor(love.graphics.getBackgroundColor())
-   love.graphics.setLineWidth(10)
-   love.graphics.circle("line", self.pos.x, self.pos.y, self.size.x / 2)
-   love.graphics.circle("line", self.pos.x, self.pos.y, self.size.x / 3)
+   love.graphics.circle("line", x, y, self.size.x / 2 * sc)
+   love.graphics.circle("line", x, y, self.size.x / 3 * sc)
 end
 
 MiddleBeat:init()

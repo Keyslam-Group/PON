@@ -6,6 +6,7 @@ local Wave   = require("lib.wave")
 local World     = require("src.world")
 local Hits      = require("src.hits")
 local Particles = require("src.particles")
+local Screen    = require("src.screen")
 
 local Ball = Class("Ball")
 
@@ -96,18 +97,33 @@ function Ball:reset()
    )
 end
 
-function Ball:draw()
+function Ball:draw(glow)
+   local sc = Screen.scale
    love.graphics.push()
-   love.graphics.translate(self.pos.x, self.pos.y)
+   love.graphics.translate(self.pos.x * sc, self.pos.y * sc)
    love.graphics.rotate(self.rot)
-   if self.hasFill then
-      love.graphics.setColor(100, 20, 20)
-      love.graphics.rectangle("line", -self.size.x/2 +3, -self.size.y/2 +3, self.size.x, self.size.y, 16, 16)
+
+   local x, y = -self.size.x/2 * sc, -self.size.y/2 * sc
+   local w, h = self.size.x * sc, self.size.y * sc
+   local r = 16 * sc
+
+   love.graphics.setLineWidth(4 * sc)
+
+   if not glow then
+      if self.hasFill then
+         local off = 3 * sc
+
+         love.graphics.setColor(100, 20, 20)
+         love.graphics.rectangle("line", x + off, y + off, w, h, r, r)
+      end
+
+      love.graphics.setColor(255, 255, 255, 30)
+      love.graphics.rectangle("fill", x, y, w, h, r, r)
    end
+
    love.graphics.setColor(255, 255, 255, 255)
-   love.graphics.rectangle("line", -self.size.x/2, -self.size.y/2, self.size.x, self.size.y, 16, 16)
-   love.graphics.setColor(255, 255, 255, 30)
-   love.graphics.rectangle("fill", -self.size.x/2, -self.size.y/2, self.size.x, self.size.y, 16, 16)
+   love.graphics.rectangle("line", x, y, w, h, r, r)
+
    love.graphics.pop()
 end
 

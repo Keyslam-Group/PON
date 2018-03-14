@@ -1,3 +1,5 @@
+local Screen = require("src.screen")
+
 local Particles = {
    list = {},
    dead = {}
@@ -35,6 +37,7 @@ function Particles:update(dt)
    for i = #self.list, 1, -1 do
       local particles = self.list[i].ps
       particles:update(dt)
+
       if not particles:isActive() then
          table.insert(self.dead, particles)
          table.remove(self.list, i)
@@ -43,10 +46,13 @@ function Particles:update(dt)
 end
 
 function Particles:draw()
+   local sc = Screen.scale
+
    love.graphics.setColor(255, 255, 255, 200)
+
    for i = 1, #self.list do
       local particle = self.list[i]
-      love.graphics.draw(particle.ps, particle.x, particle.y, particle.angle)
+      love.graphics.draw(particle.ps, particle.x * sc, particle.y * sc, particle.angle, sc)
    end
 end
 

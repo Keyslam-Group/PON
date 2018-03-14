@@ -25,14 +25,15 @@ local function make_blur_shader(sigma)
   local code = {[[
     extern vec2 direction;
     vec4 effect(vec4 color, Image texture, vec2 tc, vec2 _) {
-      vec4 c = vec4(0.0f);
   ]]}
-  local blur_line = "c += vec4(%f) * Texel(texture, tc + vec2(%f) * direction);"
+  local blur_line = "%s vec4(%f) * Texel(texture, tc + vec2(%f) * direction);"
 
+  local start = "vec4 c ="
   for i = -support,support do
     local coeff = math.exp(-.5 * i*i * one_by_sigma_sq)
     norm = norm + coeff
-    code[#code+1] = blur_line:format(coeff, i)
+    code[#code+1] = blur_line:format(start, coeff, i)
+    start = "c +="
   end
 
   code[#code+1] = ("return c * vec4(%f) * color;}"):format(1 / norm)
