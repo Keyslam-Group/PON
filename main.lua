@@ -69,9 +69,9 @@ Player:setPressedCallback(function (control)
   if control == "quit" then love.event.quit() end
 end)
 
-local Track = Wave:newSource("sounds/track.wav", "static")
+local Track = Wave:newSource("sounds/track2.wav", "static")
 Track:setIntensity(20)
-Track:setBPM(70)
+Track:setBPM(60)
 Track:setLooping(true)
 Track:onBeat(function()
    MiddleBeat:onBeat()

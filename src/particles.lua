@@ -2,44 +2,37 @@ local Screen = require("src.screen")
 
 local Particles = {
    list = {},
-   dead = {}
 }
 
 local image = love.graphics.newImage("assets/particle.png")
-local ps = love.graphics.newParticleSystem(image, 600)
-
-ps:setEmissionRate(50)
-ps:setEmitterLifetime(0.4)
-ps:setParticleLifetime(0.2, 2.3)
-ps:setSizes(0.5, 3)
-ps:setSizeVariation(0.07)
-ps:setInsertMode('top')
-ps:setColors({ 255, 255, 255, 255 }, { 255, 255, 255, 0 })
-ps:setAreaSpread('uniform', 30, 30)
-ps:setDirection(0)
-ps:setSpeed(10, 10)
-ps:setLinearAcceleration(250, -75, 300, 75)
-ps:setRadialAcceleration(15, 15)
-ps:setTangentialAcceleration(5, 5)
-ps:setLinearDamping(0, 10)
-ps:setRelativeRotation(false)
 
 function Particles:add(x, y, angle)
-   local particles = #self.dead > 0 and table.remove(self.dead) or ps:clone()
+   for i = 1, 25 do
+      local angle = angle - love.math.random(-math.pi/2 * 10, math.pi/2 * 10) / 10
 
-   particles:stop()
-   particles:start()
+      local particle = {
+         x = x, 
+         y = y, 
+         dx = math.cos(angle) * love.math.random(100, 200),
+         dy = math.sin(angle) * love.math.random(100, 200),
+      }
 
-   table.insert(self.list, {x = x, y = y, angle = angle, ps = particles})
+      particle.lifeTime = love.math.random(1, 5) / 10
+      particle.timeLeft = particle.lifeTime
+
+      table.insert(self.list, particle)
+   end
 end
 
 function Particles:update(dt)
    for i = #self.list, 1, -1 do
-      local particles = self.list[i].ps
-      particles:update(dt)
+      local particle = self.list[i]
 
-      if not particles:isActive() then
-         table.insert(self.dead, particles)
+      particle.x = particle.x + particle.dx * dt
+      particle.y = particle.y + particle.dy * dt
+
+      particle.timeLeft = particle.timeLeft - dt
+      if particle.timeLeft <= 0 then
          table.remove(self.list, i)
       end
    end
@@ -48,11 +41,17 @@ end
 function Particles:draw()
    local sc = Screen.scale
 
-   love.graphics.setColor(255, 255, 255, 200)
+   
 
    for i = 1, #self.list do
       local particle = self.list[i]
-      love.graphics.draw(particle.ps, particle.x * sc, particle.y * sc, particle.angle, sc)
+      love.graphics.setColor(255, 255, 255, particle.timeLeft / particle.lifeTime * 255)
+
+      love.graphics.push()
+      love.graphics.translate(particle.x, particle.y)
+      love.graphics.rotate(particle.timeLeft * 4)
+      love.graphics.rectangle("line", -4, -4, 8, 8)
+      love.graphics.pop()
    end
 end
 
