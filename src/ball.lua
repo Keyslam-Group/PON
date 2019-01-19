@@ -113,15 +113,15 @@ function Ball:draw(glow)
       if self.hasFill then
          local off = 3 * sc
 
-         love.graphics.setColor(100, 20, 20)
+         love.graphics.setColor(0.39216, 0.07843, 0.07843)
          love.graphics.rectangle("line", x + off, y + off, w, h, r, r)
       end
 
-      love.graphics.setColor(255, 255, 255, 30)
+      love.graphics.setColor(1, 1, 1, 0.11765)
       love.graphics.rectangle("fill", x, y, w, h, r, r)
    end
 
-   love.graphics.setColor(255, 255, 255, 255)
+   love.graphics.setColor(1,1,1,1)
    love.graphics.rectangle("line", x, y, w, h, r, r)
 
    love.graphics.pop()

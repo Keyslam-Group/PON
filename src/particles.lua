@@ -45,7 +45,7 @@ function Particles:draw()
 
    for i = 1, #self.list do
       local particle = self.list[i]
-      love.graphics.setColor(255, 255, 255, particle.timeLeft / particle.lifeTime * 255)
+      love.graphics.setColor(1, 1, 1, particle.timeLeft / particle.lifeTime)
 
       love.graphics.push()
       love.graphics.translate(particle.x, particle.y)

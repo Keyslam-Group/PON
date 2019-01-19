@@ -38,7 +38,7 @@ function MiddleBeat:draw()
    local sc = Screen.scale
    local x, y = self.pos.x * sc, self.pos.y * sc
 
-   love.graphics.setColor(255, 255, 255, 140)
+   love.graphics.setColor(1, 1, 1, 0.549)
    love.graphics.setLineWidth(10 * sc)
 
    love.graphics.circle("fill", x, y, self.size.x / 2 * sc)

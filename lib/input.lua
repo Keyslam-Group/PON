@@ -217,7 +217,6 @@ function Controller:handleChange(keycode, value, joystick)
     return
   end
 
-  print(keycode, value, joystick)
   for control, binds in pairs(self._controls) do
     for _, bind in ipairs(binds) do repeat
       if keycode ~= bind then
@@ -251,7 +250,6 @@ function Controller:handleChange(keycode, value, joystick)
         self._released[control] = true
         self._onReleasedFn(control)
       end
-      print(self._pressed[control], self._released[control])
     until true end
   end
 end

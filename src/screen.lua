@@ -34,8 +34,8 @@ function Screen:getVisible ()
 end
 
 function Screen:push ()
-  love.graphics.clear(0, 0, 0)
-  love.graphics.setColor(255, 255, 255)
+  love.graphics.clear()
+  love.graphics.setColor(1, 1, 1)
   love.graphics.setCanvas(self.canvas)
   love.graphics.clear(love.graphics.getBackgroundColor())
 end

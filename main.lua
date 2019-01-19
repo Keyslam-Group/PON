@@ -85,9 +85,9 @@ Sequence.init(Paddles[1], Paddles[2], Paddles[3], Paddles[4], ball, Track, Hits)
 Sequence.finish(0)
 
 local Gradient = love.graphics.newImage("assets/gradient.png")
-local Die = love.audio.newSource("sounds/die.wav")
+local Die = love.audio.newSource("sounds/die.wav", "stream")
 
-love.graphics.setBackgroundColor(183, 28, 28)
+love.graphics.setBackgroundColor(0.71765, 0.1098, 0.1098)
 
 function love.update(dt)
    Shake:set(0, 0)
@@ -156,7 +156,7 @@ function love.draw()
    Effect(draw)
 
    if os == "Android" or os == "iOS" then
-      love.graphics.setColor(255, 255, 255, 255)
+      love.graphics.setColor(1,1,1,1)
 
       for _, paddle in ipairs(Paddles) do
          paddle:draw(true)
@@ -185,7 +185,7 @@ function love.resize(w, h)
       .chain(Shine.effects.glow)
       .chain(Shine.effects.chromasep)
 
-      Effect.filmgrain.opacity = 0.1
+      Effect.filmgrain.opacity = 0.15
     end
 
     Screen.changed = false
